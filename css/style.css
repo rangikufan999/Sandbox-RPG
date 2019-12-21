@@ -1,0 +1,139 @@
+body{
+}
+
+p{
+	line-height:2px;
+}
+
+/* Main Container */
+/*.main_container{
+	border:1px solid black;
+}*/
+
+/* Battle Options Container */
+.options_container{
+	display:inline-block;
+	vertical-align:top;
+	width:15%;
+	height:800px;
+	background-color:white;
+	text-align:center;
+	border:1px solid black;
+}
+
+.log_container{
+	display:inline-block;
+	vertical-align:top;
+	background-color:white;
+	width:30%;
+	height:800px;
+	overflow-y:scroll;
+	border:1px solid black;
+}
+
+
+/* Battle Container */
+.battle_container{
+	/*border:2px black solid;*/
+	display:inline-block;
+	vertical-align:top;
+	width:50%;
+	height:800px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.player_row{
+	width:100%;
+	height:20%;
+	white-space:nowrap;
+}
+
+.field_row{
+	width:100%;
+	height:60%;
+}
+
+.field_row_img{
+	width:100%;
+	height:100%;
+}
+
+.enemy_row{
+	width:100%;
+	height:20%;
+	white-space:nowrap;
+}
+
+.actor_card{
+	width:19.75%;
+	border-left:1px solid black;
+	border-right:1px solid black;
+	height:100%;
+	display:inline-block;
+	vertical-align:top;
+	line-height:0;
+	margin-right:-4px;
+}
+
+/* use this to outline current actor taking their turn */
+/*#actor_2{
+	outline: 5px blue solid;
+}*/
+
+.actor_card_img{
+	width:100%;
+	height:80%;
+}
+
+.health-box{
+	background-color:#ccc;
+	height:10%;
+	width:100%;
+}
+
+.health-bar{
+	background-color:#007f00;
+	width:inherit;
+	height:100%;
+	position:relative;
+	bottom:16px;
+}
+
+.health-bar-red{
+	background-color:#cf2b06;
+	width:100%;
+	height:100%;
+}
+
+.health-bar-text{
+	position:relative;
+	text-align:center;
+	bottom:23px;
+}
+
+.mana-box{
+	background-color:#ccc;
+	height:10%;
+	width:100%;
+}
+
+.mana-bar{
+	background-color:#21aaff;
+	width:inherit;
+	height:100%;
+	position:relative;
+	bottom:16px;
+}
+
+.mana-bar-red{
+	background-color:#cf2b06;
+	width:100%;
+	height:100%;
+}
+
+ .mana-bar-text{
+ 	position:relative;
+ 	text-align:center;
+ 	bottom:23px;
+ }
