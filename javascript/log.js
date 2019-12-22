@@ -1,7 +1,8 @@
 //** Log Class **//
 
 class Log{
-	constructor(){};
+	constructor(colorFlag){
+	};
 
 	print(message){
 		$(".log_container").prepend("<p>" + message + "</p>");

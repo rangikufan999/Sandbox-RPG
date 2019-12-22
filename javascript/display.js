@@ -67,6 +67,8 @@ class Display{
 		$(".options_container").append("<button id='attack'>Attack</button><br/>");
 		$(".options_container").append("<button id='ability'>Abilities</button><br/>");
 
+		$(".options_container").prepend("<div class='actor_info'>" + player.party[combat.playerQueue].profile.name + " is up now!</div>");
+
 		$("#attack").click(function(){
 			actions.attack();
 		});

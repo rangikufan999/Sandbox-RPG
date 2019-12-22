@@ -7,6 +7,8 @@ class Combat{
 		this.gameOver = gameOver;
 	}
 
+
+	/* Change statusEffects == "DEAD" or != "DEAD" to function check for "DEAD" status object */
 	initiateTurn(){
 		if(this.currentTurn == 0 && this.gameOver == false){
 			log.print("Player's Turn! Select an action!");

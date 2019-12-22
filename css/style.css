@@ -1,8 +1,21 @@
 body{
 }
 
-p{
-	line-height:2px;
+p{	
+	margin-top:2px;
+	margin-bottom:2px;
+	margin-left:16px;
+	margin-right:0;
+}
+
+.log_container p:nth-child(even){
+	background-color:#ab622b;
+	color:white;
+}
+
+.log_container p:nth-child(odd){
+	background-color:#2b4fab;
+	color:white;
 }
 
 /* Main Container */
@@ -24,11 +37,12 @@ p{
 .log_container{
 	display:inline-block;
 	vertical-align:top;
-	background-color:white;
+	background-color:#2b4fab;
 	width:30%;
 	height:800px;
 	overflow-y:scroll;
-	border:1px solid black;
+	border:2px solid #ab622b;
+	border-radius:25px;
 }
 
 
