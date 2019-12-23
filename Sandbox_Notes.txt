@@ -1,0 +1,47 @@
+Combat
+	-Basic Attacks
+	-Defending
+	-Magic Attacks
+	-Special Attacks
+	-Status Effects
+	-Ultimates
+	-Field Effects
+	[Minor]
+		How Damage is Dealt
+		Type Advantages and Disadvantages
+		Critical Strikes and Damage Ranges
+
+Process
+	1. Determine Turn Order
+	2. Determine Player Order after turn decided
+		-Check Status Effects
+			-Check Duration
+			-Clear Effects
+				-Check Next Effect or Go to Action Selection
+			-Run Effect Action
+	3. Each Player Decides Action
+		-Attack
+		-Defend
+		-Magic Ability
+		-Special Ability
+		-Ultimate
+
+
+[Fireball - Rank 1] 
+	Launch a ball of Fire Elemental Magic at the target dealing 76 damage.
+
+No more than 1 Incapacitate or Disorient.
+Same Name Status Effects overwrite old ones.
+		
+
+
+1. Establish target party
+	-> Produces Affiliation
+2. Loop through the status effects of the current actor in the party.
+	-> Run a check on all Status Effects
+		-> Check Duration ? 0 remove() : next();
+			-Remove
+				Remove Status effect from array
+			-Next
+				decrement counter
+				call associated status effect function (example OverTime(damage);)

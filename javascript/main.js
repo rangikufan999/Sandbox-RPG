@@ -1,8 +1,9 @@
 //** Default Value Class **//
 class Defaults{
-	constructor(health, mana, level, attack, defense, magic, resistance, exp, expNeeded){
+	constructor(health, mana, sp, level, attack, defense, magic, resistance, exp, expNeeded){
 	 	this.health = health;
 	 	this.mana = mana;
+	 	this.sp = sp;
 	 	this.level = level;
 	 	this.attack = attack;
 	 	this.defense = defense;
@@ -24,7 +25,7 @@ class Player{
 
 //** Hero and Enemy Class **//
 class Actor{
-	constructor(name, img, health = defaults.health, maxHealth = defaults.health, mana = defaults.mana, maxMana = defaults.mana, level = defaults.level, attack = defaults.attack, defense = defaults.defense, magic = defaults.magic, resistance = defaults.resistance, statusEffects = [], abilities = []){
+	constructor(name, img, health = defaults.health, maxHealth = defaults.health, mana = defaults.mana, maxMana = defaults.mana, sp = defaults.sp, maxSp = defaults.maxSp, level = defaults.level, attack = defaults.attack, defense = defaults.defense, magic = defaults.magic, resistance = defaults.resistance, statusEffects = [], abilities = []){
 
 		this.profile = {
 			name: name,
@@ -33,6 +34,8 @@ class Actor{
 			maxHealth: maxHealth,
 			mana: mana,
 			maxMana: maxMana,
+			sp: sp,
+			maxSp: maxSp,
 			level: level
 		};
 
@@ -52,8 +55,8 @@ class Actor{
 }
 
 class Hero extends Actor{
-	constructor(name, img, exp = defaults.exp, expNeeded = defaults.expNeeded, health, maxHealth, mana, maxMana, level, attack, defense, magic, resistance, statusEffects){
-		super(name, img, health, maxHealth, mana, maxMana, level, attack, defense, magic, resistance, statusEffects);
+	constructor(name, img, exp = defaults.exp, expNeeded = defaults.expNeeded, health, maxHealth, mana, maxMana, sp, maxSp, level, attack, defense, magic, resistance, statusEffects){
+		super(name, img, health, maxHealth, mana, maxMana, sp, maxSp, level, attack, defense, magic, resistance, statusEffects);
 		this.profile.exp = exp;
 		this.profile.expNeeded = expNeeded;
 		
@@ -68,5 +71,5 @@ class EnemyParty{
 
 
 
-var defaults = new Defaults(30,30,1,20,10,15,0,0,30);
+var defaults = new Defaults(3000,3000, 3000, 1,20,10,15,0,0,30);
 

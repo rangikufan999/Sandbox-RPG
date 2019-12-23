@@ -10,11 +10,11 @@ class Display{
 		}
 	}
 
-	displayTargetSelection(team, action_type, spell = []){
+	displayTargetSelection(team, action_type, spell){
 		$(".options_container").html("");
 		$(".options_container").html('<select id="targets"></select>');
 		for(var i = 0;i<team.length;i++){
-			if(team[i].statusEffects != "DEAD"){
+			if(combat.checkDeathStatus(team[i]) == false){
 				$("#targets").append("<option value='"+i+"'>"+ team[i].profile.name +" ["+i+"]");
 			}
 		}
@@ -50,14 +50,26 @@ class Display{
 
 		$("#targetSelect").click(function(){
 			var spell = actor.abilities[$("#abilities").prop("value")];
-			if(actor.profile.mana >= spell.stats.mana_cost){
-				if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
-					displayer.displayTargetSelection(player.party, "ability", spell);
-				}else if(spell.identity.modify_type == "damage"){
-					displayer.displayTargetSelection(enemyParty.party, "ability", spell);
+			if(spell.identity.ability_type == "spell"){
+				if(actor.profile.mana >= spell.stats.mana_cost){
+					if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
+						displayer.displayTargetSelection(player.party, "ability", spell);
+					}else if(spell.identity.modify_type == "damage"){
+						displayer.displayTargetSelection(enemyParty.party, "ability", spell);
+					}
+				}else{
+					log.print(actor.profile.name + " does not have enough mana to to cast that spell!");
 				}
-			}else{
-				log.print(actor.profile.name + " does not have enough mana to to cast that spell!");
+			}else if(spell.identity.ability_type == "special"){
+				if(actor.profile.sp >= spell.stats.mana_cost){
+					if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
+						displayer.displayTargetSelection(player.party, "ability", spell);
+					}else if(spell.identity.modify_type == "damage"){
+						displayer.displayTargetSelection(enemyParty.party, "ability", spell);
+					}
+				}else{
+					log.print(actor.profile.name + " does not have enough sp to to cast that spell!");
+				}
 			}
 		});
 	}
@@ -115,5 +127,23 @@ class Display{
 		$("div#" + affiliation + "_"+index+" div.mana-bar-red").animate({'width':a + '%'}, 700);
 		$("div#" + affiliation + "_"+index+" div.mana-bar").animate({'width':a + '%'}, 500);
 		$("div#" + affiliation + "_"+index+" div.mana-bar-blue").animate({'width':a + '%'}, 300);
+	}
+
+	updateSp(target, affiliation){
+		var index;
+		var a = target.profile.sp * (100 / target.profile.maxSp);
+		if(a < 0){
+			a = 0;
+		}
+		if(affiliation == "actor"){
+			index = player.party.indexOf(target) + 1;
+		}else if(affiliation == "enemy"){
+			index = enemyParty.party.indexOf(target) + 1;
+		}
+
+		$("div#" + affiliation + "_"+index+" div.sp-bar-text").html(Math.round(a) + "%");
+		$("div#" + affiliation + "_"+index+" div.sp-bar-red").animate({'width':a + '%'}, 700);
+		$("div#" + affiliation + "_"+index+" div.sp-bar").animate({'width':a + '%'}, 500);
+		$("div#" + affiliation + "_"+index+" div.sp-bar-blue").animate({'width':a + '%'}, 300);
 	}
 }
