@@ -45,3 +45,12 @@ Same Name Status Effects overwrite old ones.
 			-Next
 				decrement counter
 				call associated status effect function (example OverTime(damage);)
+
+SYSTEMS TO WORK ON
+	-Crit System
+	-Using Items
+	-Ultimates
+	-Field Effects
+		-Light/Darkness System
+	-Damage Bonus System
+	-Fanfare System
