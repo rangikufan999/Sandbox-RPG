@@ -12,6 +12,8 @@
 		<script src="javascript/log.js"></script>
 		<script src="javascript/abilities.js"></script>
 		<script src="javascript/status_effects.js"></script>
+		<script src="javascript/mathSystems.js"></script>
+		<script src="javascript/items.js"></script>
 		<script src="javascript/init.js"></script>
 	</head>
 	<body>
@@ -40,6 +42,12 @@
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
 					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
+					    </div>
 					</div>
 					<div id='actor_2' class="actor_card"><img src='' class='actor_card_img' />
 						<div class="health-box">
@@ -59,6 +67,12 @@
 					    	<div class="sp-bar-blue"></div>
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
+					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
 					    </div>					
 					</div>
 					<div id='actor_3' class="actor_card"><img src='' class='actor_card_img' />
@@ -80,6 +94,12 @@
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
 					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
+					    </div>
 					</div>
 					<div id='actor_4' class="actor_card"><img src='' class='actor_card_img' />
 						<div class="health-box">
@@ -100,6 +120,12 @@
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
 					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
+					    </div>
 					</div>
 					<div id='actor_5' class="actor_card"><img src='' class='actor_card_img' />
 						<div class="health-box">
@@ -119,6 +145,12 @@
 					    	<div class="sp-bar-blue"></div>
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
+					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
 					    </div>
 					</div>
 				</div>
@@ -143,6 +175,12 @@
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
 					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
+					    </div>
 					</div>
 					<div id='enemy_2' class="actor_card"><img src='' class='actor_card_img' />
 						<div class="health-box">
@@ -162,6 +200,12 @@
 					    	<div class="sp-bar-blue"></div>
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
+					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
 					    </div>
 					</div>
 					<div id='enemy_3' class="actor_card"><img src='' class='actor_card_img' />
@@ -183,6 +227,12 @@
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
 					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
+					    </div>
 					</div>
 					<div id='enemy_4' class="actor_card"><img src='' class='actor_card_img' />
 						<div class="health-box">
@@ -203,6 +253,12 @@
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
 					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
+					    </div>
 					</div>
 					<div id='enemy_5' class="actor_card"><img src='' class='actor_card_img' />
 						<div class="health-box">
@@ -222,6 +278,12 @@
 					    	<div class="sp-bar-blue"></div>
 					    	<div class='sp-bar'></div>
 					    	<div class='sp-bar-text'>100%</div>
+					    </div>
+					    <div class="ult-box">
+					    	<div class="ult-bar-red"></div>
+					    	<div class="ult-bar-blue"></div>
+					    	<div class='ult-bar'></div>
+					    	<div class='ult-bar-text'>100%</div>
 					    </div>
 					</div>
 				</div>

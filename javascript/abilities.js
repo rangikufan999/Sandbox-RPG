@@ -1,7 +1,7 @@
 //** Abilities Class **//
 
 class Ability{
-	constructor(name, tooltip, rank, modify_type, target_type, ability_type, mana_cost, amount, crit_rate, status_effect, rate_of_success){
+	constructor(name, tooltip, rank, modify_type, target_type, ability_type, ultimate, mana_cost, amount, crit_rate, status_effect, rate_of_success){
 		this.details = {
 			name: name,
 			tooltip: tooltip,
@@ -14,8 +14,10 @@ class Ability{
 			modify_type: modify_type,
 			/* target_type determines whether it is single target or multi-target */
 			target_type: target_type,
-			/* ability_type determines whether it is a special or a spell */
-			ability_type: ability_type
+			/* ability_type determines whether it is a special or a spell or an ultimate */
+			ability_type: ability_type,
+
+			ultimate: ultimate
 		};
 
 		this.stats = {

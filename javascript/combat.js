@@ -61,18 +61,60 @@ class Combat{
 		}
 	}
 
+	defaultOutResource(target, stat){
+		if(stat == "health"){
+			if(target.profile.health < 0){
+				target.profile.health = 0;
+				target.status.statusEffects = [];
+				target.status.statusEffects.push(combat.generateDeathStatus());
+			}
+		}else if(stat == "mana"){
+			if(target.profile.mana < 0){
+				target.profile.mana = 0;
+			}
+		}else if(stat == "sp"){
+			if(target.profile.sp < 0){
+				target.profile.sp = 0;
+			}
+		}else if(stat == "ultimate"){
+			if(target.profile.ultimate < 0){
+				target.profile.ultimate = 0;
+			}
+		}
+	}
+
+	maxOutResource(target, stat){
+		if(stat == "health"){
+			if(target.profile.health > target.profile.maxHealth){
+				target.profile.health = target.profile.maxHealth;
+			}
+		}else if(stat == "mana"){
+			if(target.profile.mana > target.profile.maxMana){
+				target.profile.mana = target.profile.maxMana;
+			}
+		}else if(stat == "sp"){
+			if(target.profile.sp > target.profile.maxSp){
+				target.profile.sp = target.profile.maxSp;
+			}
+		}else if(stat == "ultimate"){
+			if(target.profile.ultimate > target.profile.maxUltimate){
+				target.profile.ultimate = target.profile.maxUltimate;
+			}
+		}
+	}
+
 
 	dealDamage(attacker, defender, affiliation){
 		var damage = Math.floor(attacker.stats.attack - (damageReduction.calculatePhysicalDamageReduction(defender.stats.defense)));
+		var attackerAffiliation = combat.currentTurn == 0 ? "actor" : "enemy";
+		damage = crit.calculateCrit(attacker.stats.crit, damage);
 		defender.profile.health -= damage;
-		
-		
+		attacker.profile.ultimate += 10;
+		combat.maxOutResource(attacker, "ultimate");
 		log.print(attacker.profile.name + " dealt " + damage + " to " + defender.profile.name + "!");
-		if(defender.profile.health < 0){
-			defender.profile.health = 0;
-			defender.status.statusEffects = [];
-			defender.status.statusEffects.push(combat.generateDeathStatus());
-		}
+		combat.defaultOutResource(defender, "health");
+
+		displayer.updateUltimateBar(attacker, attackerAffiliation);
 		displayer.updateHealth(defender, affiliation)
 		combat.checkGameOver(player,enemyParty);
 	}
@@ -82,11 +124,7 @@ class Combat{
 	dealRawDamage(target, damage, affiliation){
 		target.profile.health -= damage;
 
-		if(target.profile.health < 0){
-			target.profile.health = 0;
-			target.status.statusEffects = [];
-			target.status.statusEffects.push(combat.generateDeathStatus());
-		}
+		combat.defaultOutResource(target);
 		displayer.updateHealth(target, affiliation);
 		combat.checkGameOver(player,enemyParty);
 	}
@@ -102,32 +140,67 @@ class Combat{
 		defender.profile.health -= damage;
 		
 		log.print(caster.profile.name + " dealt " + damage + " to " + defender.profile.name + "!");
-		if(defender.profile.health < 0){
-			defender.profile.health = 0;
-			defender.status.statusEffects = [];
-			defender.status.statusEffects.push(combat.generateDeathStatus());
-		}
+		combat.defaultOutResource(defender, "health");
 		displayer.updateHealth(defender, affiliation)
+		combat.checkGameOver(player,enemyParty);
+	}
+
+	itemDamage(item, target, affiliation){
+		target.profile.health -= item.stats.amount;
+		combat.defaultOutResource(target, "health");
+		inv.reduceItemQuantity(item);
+		log.print(player.party[combat.playerQueue].profile.name + " used a " + item.details.name + " and did " + item.stats.amount + " damage to " + target.profile.name + "!");
+		displayer.updateHealth(target, affiliation);
 		combat.checkGameOver(player,enemyParty);
 	}
 
 	dealRawHealing(target, healing, affiliation){
 		target.profile.health += healing;
-		if(target.profile.health >= target.profile.maxHealth){
-			target.profile.health = target.profile.maxHealth;
-		}
+		combat.maxOutResource(target, "health");
 		displayer.updateHealth(target, affiliation);
 	}
 
 	healDamage(healer, patient, heal_amount, affiliation){
 		var healing = Math.floor(healer.stats.magic + heal_amount);
 		patient.profile.health += healing;
-		if(patient.profile.health > patient.profile.maxHealth){
-			patient.profile.health = patient.profile.maxHealth;
-		}
+		combat.maxOutResource(patient, "health");
 
 		log.print(healer.profile.name + " restored " + heal_amount + " health to " + patient.profile.name + "!");
 		displayer.updateHealth(patient, affiliation);
+	}
+
+	itemHealing(item, target, affiliation){
+		combat.selectStat(target, item.stats.stat, item.stats.amount, "healing");
+		inv.reduceItemQuantity(item);
+		log.print(target.profile.name + " restored " + item.stats.amount + " health by using (a)" + item.details.name + "!");
+		displayer.updateHealth(target, affiliation);
+	}
+
+	selectStat(target, stat, amount, modify_type){
+
+		switch(stat){
+			case "health":
+				if(modify_type == "healing"){
+					alert("got here");
+					target.profile.health += amount;
+					combat.maxOutResource(target, "health");
+				}
+			break;
+
+			case "mana":
+				if(modify_type == "healing"){
+					target.profile.mana += amount;
+					combat.maxOutResource(target, "mana");
+				}
+			break;
+
+			case "sp":
+				if(modify_type == "healing"){
+					target.profile.sp += amount;
+					combat.maxOutResource(target, "sp");
+				}
+			break;
+		}
 	}
 
 	reduceMana(caster, spell, affiliation){
@@ -141,6 +214,25 @@ class Combat{
 		if(caster.profile.sp < 0){caster.profile.sp = 0}
 		displayer.updateSp(caster, affiliation);
 	}
+
+	reduceUltimate(caster, affiliation){
+		caster.profile.ultimate = 0;
+		displayer.updateUltimateBar(caster, affiliation);
+	}
+
+	applyUtility(item, target){
+		switch(item.identity.utility){
+			case "clear":
+				target.status.statusEffects = [];
+				log.print(target.profile.name + "'s status has been restored!");
+				inv.reduceItemQuantity(item);
+			break;
+
+			//Add More Cases for status effects here.
+		}
+	}
+
+	
 
 	checkGameOver(playerTeam, enemyTeam){
 		var playerDeathCount = 0;
@@ -191,7 +283,15 @@ class Actions{
 	}
 
 	ability(){
-		displayer.displayAbilitySelection(player.party[combat.playerQueue]);
+		displayer.displayAbilitySelection(player.party[combat.playerQueue], "non-ult");
+	}
+
+	items(){
+		displayer.displayItemsSelection(player.inventory);
+	}
+
+	ultimate(){
+		displayer.displayAbilitySelection(player.party[combat.playerQueue], "ult");
 	}
 
 	determineTarget(target, action_type, spell){
@@ -220,6 +320,35 @@ class Actions{
 			}
 
 
+		}else if(action_type == "item"){
+			if(spell.identity.modify_type == "damage"){
+				combat.itemDamage(spell, target, "enemy");
+			}else if(spell.identity.modify_type == "healing"){
+				combat.itemHealing(spell, target, "actor");
+			}else if(spell.identity.modify_type == "utility" || spell.identity.modify_type == "utility_ally" || spell.identity.modify_type == "utility_enemy"){
+				combat.applyUtility(spell, target);
+			}
+		}else if(action_type == "ultimate"){
+			if(spell.identity.ability_type == "spell"){
+				if(spell.identity.modify_type == "damage"){
+
+					combat.spellDamage(player.party[combat.playerQueue], target, "enemy", spell, "special");
+					stat.checkSuccess(target, spell);
+				}else if(spell.identity.modify_type == "healing"){
+					combat.healDamage(player.party[combat.playerQueue], target, spell.stats.amount, "actor");
+					stat.checkSuccess(target, spell);
+				}
+				combat.reduceUltimate(player.party[combat.playerQueue], "actor");
+			}else if(spell.identity.ability_type == "special"){
+				if(spell.identity.modify_type == "damage"){
+					combat.spellDamage(player.party[combat.playerQueue], target, "enemy", spell, "special");
+					stat.checkSuccess(target, spell);
+				}else if(spell.identity.modify_type == "healing"){
+					combat.healDamage(player.party[combat.playerQueue], target, spell.stats.amount, "actor");
+					stat.checkSuccess(target, spell);
+				}
+				combat.reduceUltimate(player.party[combat.playerQueue], "actor");
+			}
 		}
 		console.log(combat.playerQueue);
 		combat.playerQueue += 1;

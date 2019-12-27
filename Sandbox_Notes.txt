@@ -47,10 +47,10 @@ Same Name Status Effects overwrite old ones.
 				call associated status effect function (example OverTime(damage);)
 
 SYSTEMS TO WORK ON
-	-Crit System
-	-Using Items
-	-Ultimates
-	-Field Effects
-		-Light/Darkness System
-	-Damage Bonus System
-	-Fanfare System
+	-Crit System [DONE]
+	-Using Items [DONE BUT NEEDS REFINED] 
+	-Ultimates [DONE BUT NEEDS REFINED]
+	-Field Effects [NOT STARTED]
+		-Light/Darkness System [TBA]
+	-Damage Bonus System [STRUCTURE MADE, NO APPLICABLE SCENARIOS YET]
+	-Fanfare System [NOT STARTED]

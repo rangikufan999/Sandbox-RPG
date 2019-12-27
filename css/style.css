@@ -97,7 +97,7 @@ p{
 
 .actor_card_img{
 	width:100%;
-	height:70%;
+	height:60%;
 }
 
 .health-box{
@@ -173,6 +173,32 @@ p{
 }
 
  .sp-bar-text{
+ 	position:relative;
+ 	text-align:center;
+ 	bottom:23px;
+ }
+
+  .ult-box{
+	background-color:#ccc;
+	height:10%;
+	width:100%;
+}
+
+.ult-bar{
+	background-color:#7b00ff;
+	width:inherit;
+	height:100%;
+	position:relative;
+	bottom:16px;
+}
+
+.ult-bar-red{
+	background-color:#cf2b06;
+	width:100%;
+	height:100%;
+}
+
+ .ult-bar-text{
  	position:relative;
  	text-align:center;
  	bottom:23px;
