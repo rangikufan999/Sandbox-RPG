@@ -62,9 +62,21 @@ class Display{
 				if(spell.identity.ability_type == "spell"){
 					if(actor.profile.mana >= spell.stats.mana_cost){
 						if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
-							displayer.displayTargetSelection(player.party, "ability", spell);
+							if(spell.identity.target_type == "single"){
+								displayer.displayTargetSelection(player.party, "ability", spell);
+							}else if(spell.identity.target_type == "multi-target"){
+								actions.determineTarget(player.party, "ability", spell);
+							}else if(spell.identity.target_type == "self"){
+								actions.determineTarget(actor, "ability", spell);
+							}
 						}else if(spell.identity.modify_type == "damage"){
-							displayer.displayTargetSelection(enemyParty.party, "ability", spell);
+							if(spell.identity.target_type == "single"){
+								displayer.displayTargetSelection(enemyParty.party, "ability", spell);
+							}else if(spell.identity.target_type == "multi-target"){
+								actions.determineTarget(enemyParty.party, "ability", spell);
+							}else if(spell.identity.target_type == "self"){
+								actions.determineTarget(actor, "ability", spell);
+							}
 						}
 					}else{
 						log.print(actor.profile.name + " does not have enough mana to to cast that spell!");
@@ -72,9 +84,21 @@ class Display{
 				}else if(spell.identity.ability_type == "special"){
 					if(actor.profile.sp >= spell.stats.mana_cost){
 						if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
-							displayer.displayTargetSelection(player.party, "ability", spell);
+							if(spell.identity.target_type == "single"){
+								displayer.displayTargetSelection(player.party, "ability", spell);
+							}else if(spell.identity.target_type == "multi-target"){
+								actions.determineTarget(player.party, "ability", spell);
+							}else if(spell.identity.target_type == "self"){
+								actions.determineTarget(actor, "ability", spell);
+							}
 						}else if(spell.identity.modify_type == "damage"){
-							displayer.displayTargetSelection(enemyParty.party, "ability", spell);
+							if(spell.identity.target_type == "single"){
+								displayer.displayTargetSelection(enemyParty.party, "ability", spell);
+							}else if(spell.identity.target_type == "multi-target"){
+								actions.determineTarget(enemyParty.party, "ability", spell);
+							}else if(spell.identity.target_type == "self"){
+								actions.determineTarget(actor, "ability", spell);
+							}
 						}
 					}else{
 						log.print(actor.profile.name + " does not have enough sp to to cast that spell!");
@@ -83,15 +107,39 @@ class Display{
 			}else if(ult == "ult"){
 				if(spell.identity.ability_type == "spell"){
 					if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
-						displayer.displayTargetSelection(player.party, "ultimate", spell);
+						if(spell.identity.target_type == "single"){
+							displayer.displayTargetSelection(player.party, "ultimate", spell);
+						}else if(spell.identity.target_type == "multi-target"){
+							actions.determineTarget(player.party, "ultimate", spell);
+						}else if(spell.identity.target_type == "self"){
+							actions.determineTarget(actor, "ultimate", spell);
+						}
 					}else if(spell.identity.modify_type == "damage"){
-						displayer.displayTargetSelection(enemyParty.party, "ultimate", spell);
+						if(spell.identity.target_type == "single"){
+							displayer.displayTargetSelection(enemyParty.party, "ultimate", spell);
+						}else if(spell.identity.target_type == "multi-target"){
+							actions.determineTarget(enemyParty.party, "ultimate", spell);
+						}else if(spell.identity.target_type == "self"){
+							actions.determineTarget(actor, "ultimate", spell);
+						}
 					}
 				}else if(spell.identity.ability_type == "special"){
 					if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
-						displayer.displayTargetSelection(player.party, "ultimate", spell);
+						if(spell.identity.target_type == "single"){
+							displayer.displayTargetSelection(player.party, "ultimate", spell);
+						}else if(spell.identity.target_type == "multi-target"){
+							actions.determineTarget(player.party, "ultimate", spell);
+						}else if(spell.identity.target_type == "self"){
+							actions.determineTarget(actor, "ultimate", spell);
+						}
 					}else if(spell.identity.modify_type == "damage"){
-						displayer.displayTargetSelection(enemyParty.party, "ultimate", spell);
+						if(spell.identity.target_type == "single"){
+							displayer.displayTargetSelection(enemyParty.party, "ultimate", spell);
+						}else if(spell.identity.target_type == "multi-target"){
+							actions.determineTarget(enemyParty.party, "ultimate", spell);
+						}else if(spell.identity.target_type == "self"){
+							actions.determineTarget(actor, "ultimate", spell);
+						}
 					}
 				}
 			}

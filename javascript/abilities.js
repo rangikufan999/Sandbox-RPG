@@ -12,7 +12,7 @@ class Ability{
 
 			/* modify_type determines whether it is damage, healing, or utility */
 			modify_type: modify_type,
-			/* target_type determines whether it is single target or multi-target */
+			/* target_type determines whether it is single target multi-target or self */
 			target_type: target_type,
 			/* ability_type determines whether it is a special or a spell or an ultimate */
 			ability_type: ability_type,
