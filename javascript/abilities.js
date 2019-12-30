@@ -14,7 +14,7 @@ class Ability{
 			modify_type: modify_type,
 			/* target_type determines whether it is single target multi-target or self */
 			target_type: target_type,
-			/* ability_type determines whether it is a special or a spell or an ultimate */
+			/* ability_type determines whether it is a special or a spell*/
 			ability_type: ability_type,
 
 			ultimate: ultimate

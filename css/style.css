@@ -8,6 +8,11 @@ p{
 	margin-right:0;
 }
 
+.log_container p{
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
 .log_container p:nth-child(even){
 	background-color:#ab622b;
 	color:white;
@@ -27,7 +32,7 @@ p{
 .options_container{
 	display:inline-block;
 	vertical-align:top;
-	width:15%;
+	width:10%;
 	height:800px;
 	background-color:white;
 	text-align:center;
@@ -41,6 +46,7 @@ p{
 	width:30%;
 	height:800px;
 	overflow-y:scroll;
+	word-wrap:auto;
 	border:2px solid #ab622b;
 	border-radius:25px;
 }

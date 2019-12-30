@@ -30,14 +30,20 @@ var sage_mode = new Ability("Sage Mode", "Activate Phoenix Sage Mode, boosting a
 var daze_palm = new Ability("Daze Palm", "Strike the target with a palm force hard enough to disorient them.", 1, "damage", "single", "special", "no", 25, 60, 0.05, new StatusEffect("Dazed", "This unit is in a disoriented state, making their actions unpredictable and random.", "Disorient", "NONE", 2, 0, "NONE"), 1.00);
 var poisonous_cupcake = new Ability("Poisonous Cupcake", "Force-feed a poisonous cupcake to an opponent and poison them.", 1, "damage", "single", "special", "no", 20, 50, 0.05, new StatusEffect("Food Poisoning", "This unit is ill from food poisoning and taking damage every turn.", "OverTime", "dot", 3, 20, "NONE"), 1.00);
 var restorative_foodpill = new Ability("Restorative Foodpill", "Give a rejuvanating foodpill to an ally, restoring health for 3 turns.", 1, "healing", "single", "special", "no", 40, 25, 0.05, new StatusEffect("Rejuvanation", "Restoring Health each turn.", "OverTime", "hot", 3, 25, "NONE"), 1.00);
+var cha_nara = new Ability("Chaa-naraa!", "Sakura's inner spirit bolsters her next attack causing high physical damage.", 1, "damage", "single", "special", "no", 20, 200, 0.20, "NA", 0);
+var holy_3 = new Ability("Holy III", "Heal all allies for an immense amount of healing.", 1, "healing", "multi-target", "spell", "no", 50, 300, 0.50, "NA", 0);
+var firaga = new Ability("Firaga", "Blast all enemies with huge fire damage", 1, "damage", "multi-target", "spell", "no", 50, 300, 0.50, "NA", 0);
+var first_aid = new Ability("First Aid", "Apply first aid to all party members.", 1, "healing", "multi-target", "special", "no", 35, 200, 0.50, "NA", 0);
 
 var mangekyou_sharingan = new Ability("Mangekyou Sharingan", "Ultimate Ability of Itachi.", 1, "damage", "single", "special", "yes", 0, 250, 0.05, new StatusEffect("Genjutsu", "This unit is under a genjutsu", "Incapacitate", "NONE", 3, 0, "NONE"), 0.90);
 
 
-player.party.push(new Hero("Itachi", "img/itachi.png", 0, 30, 200, 200, 150, 150, 150, 150, 0, 10, 1, 10, 70, 10, 70, 1.0, []));
-player.party.push(new Hero("Karin", "img/karin.jpg", 0, 30, 200, 200, 150, 150, 150, 150, 0, 10, 1, 10, 70, 10, 70, 1.0, []));
-player.party.push(new Hero("Hinata", "img/hinata.jpg", 0, 30, 200, 200, 150, 150, 150, 150, 0, 10, 1, 10, 70, 10, 70, 1.0, []));
-player.party.push(new Hero("Pinkamena", "img/pinkie.png", 0, 30, 200, 200, 150, 150, 150, 150, 0, 10, 1, 10, 70, 10, 70, 1.0, []));
+player.party.push(new Hero("Itachi", "img/itachi.png", 0, 30, 600, 600, 150, 150, 150, 150, 0, 10, 1, "Fire", "Human", "Warrior", 10, 70, 10, 70, 1.0, []));
+player.party.push(new Hero("Karin", "img/karin.jpg", 0, 30, 600, 600, 150, 150, 150, 150, 0, 10, 1, "Wind", "Human", "Warrior", 10, 70, 10, 70, 1.0, []));
+player.party.push(new Hero("Hinata", "img/hinata.jpg", 0, 30, 600, 600, 150, 150, 150, 150, 0, 10, 1, "Wind", "Human", "Warrior", 10, 70, 10, 70, 1.0, []));
+player.party.push(new Hero("Pinkamena", "img/pinkie.png", 0, 30, 600, 600, 150, 150, 150, 150, 0, 10, 1, "Earth", "Pony", "Warrior", 10, 70, 10, 70, 1.0, []));
+player.party.push(new Hero("Sakura", "img/sage_sakura.png", 0, 30, 600, 600, 150, 150, 150, 150, 0, 10, 1, "Earth", "Human", "Ninja", 10, 70, 10, 70, 1.0, []));
+
 player.party[0].abilities.push(fireball);
 player.party[0].abilities.push(shuriken_jutsu);
 player.party[0].abilities.push(mangekyou_sharingan);
@@ -48,6 +54,14 @@ player.party[1].abilities.push(sage_mode);
 player.party[2].abilities.push(daze_palm);
 player.party[3].abilities.push(poisonous_cupcake);
 player.party[3].abilities.push(restorative_foodpill);
+player.party[4].abilities.push(cha_nara);
+
+enemyParty.party[0].abilities.push(mangekyou_sharingan);
+enemyParty.party[1].abilities.push(mangekyou_sharingan);
+enemyParty.party[2].abilities.push(mangekyou_sharingan);
+enemyParty.party[3].abilities.push(mangekyou_sharingan);
+enemyParty.party[4].abilities.push(mangekyou_sharingan);
+
 
 
 //Add Items to inventory here!

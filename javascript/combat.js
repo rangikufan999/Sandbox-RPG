@@ -43,7 +43,8 @@ class Combat{
 				if(combat.enemyQueue<enemyParty.party.length && combat.gameOver == false){
 					var takeTurn = stat.checkStatus(combat.enemyQueue);
 					if(combat.checkDeathStatus(enemyParty.party[combat.enemyQueue]) == false && takeTurn != false){
-						combat.dealDamage(enemyParty.party[combat.enemyQueue], player.party[dieRoll.roll(player.party.length)], "actor");
+						var targ = combat.selectAliveTarget(player.party);
+						combat.selectRandomAction(targ);
 						combat.enemyQueue += 1;
 					}else if(combat.checkDeathStatus(enemyParty.party[combat.enemyQueue]) == true || takeTurn == false){
 						log.print("This unit is incapacitated and cannot take their turn.");
@@ -70,6 +71,175 @@ class Combat{
 			}, 1200);	
 		}else if(this.gameOver == true){
 			log.print("Game Over");
+		}
+	}
+
+	selectAliveTarget(party){
+		/* For enemy to select a target that is alive. */
+		var ind;
+		var foundDead = false;
+		var choices = [];
+
+		for(var i = 0;i<party.length;i++){
+			foundDead = combat.checkDeathStatus(party[i]);
+			if(foundDead == true){
+				foundDead = false;
+				continue;
+			}else if(foundDead == false){
+				choices.push(party[i]);
+			}
+		}
+
+		return choices[dieRoll.roll(choices.length)];
+	}
+
+	selectRandomAction(targ){
+		var ind = dieRoll.roll(3);
+		switch(ind){
+			case 0:
+				/* attack */
+				console.log("Enemy is Attacking");
+				combat.dealDamage(enemyParty.party[combat.enemyQueue], targ, "actor");
+			break;
+
+			case 1:
+				/* ability */
+				var caster = enemyParty.party[combat.enemyQueue];
+				var casterSpells = enemyParty.party[combat.enemyQueue].abilities;
+				if(casterSpells.length > 0 && combat.checkForSpells(caster) == true){
+					var spell = combat.selectRandomAbility(targ);
+					if(spell.identity.ability_type == "spell"){
+						if(spell.identity.target_type == "single" && spell.identity.modify_type == "damage"){
+							combat.spellDamage(caster, targ, "actor", spell, spell.identity.ability_type);
+							combat.reduceMana(caster, spell, "enemy");
+						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "damage"){
+							combat.dealPartyDamage(player.party, spell, spell.identity.ability_type);
+							combat.reduceMana(caster, spell, "enemy");
+						}else if(spell.identity.target_type == "single" && spell.identity.modify_type == "healing" || spell.identity.target_type == "single" && spell.identity.modify_type == "utility"){
+							var target = combat.selectAliveTarget(enemyParty.party);
+							combat.healDamage(caster, target, spell.stats.amount, "enemy");
+							combat.reduceMana(caster, spell, "enemy");
+						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "healing" || spell.identity.target_type == "multi-target" && spell.identity.modify_type == "utility"){
+							combat.dealPartyHealing(enemyParty.party, spell, spell.identity.ability_type);
+							combat.reduceMana(caster, spell, "enemy");
+						}
+					}else if(spell.identity.ability_type == "special"){
+						if(spell.identity.target_type == "single" && spell.identity.modify_type == "damage"){
+							combat.spellDamage(caster, targ, "actor", spell, spell.identity.ability_type);
+							combat.reduceSp(caster, spell, "enemy");
+						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "damage"){
+							combat.dealPartyDamage(player.party, spell, spell.identity.ability_type);
+							combat.reduceSp(caster, targ, spell.stats.amount, "enemy");
+						}else if(spell.identity.target_type == "single" && spell.identity.modify_type == "healing" || spell.identity.target_type == "single" && spell.identity.modify_type == "utility"){
+							var target = combat.selectAliveTarget(enemyParty.party);
+							combat.healDamage(caster, target, spell.stats.amount, "enemy");
+							combat.reduceSp(caster, spell, "enemy");
+						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "healing" || spell.identity.target_type == "multi-target" && spell.identity.modify_type == "utility"){
+							combat.dealPartyHealing(enemyParty.party, spell, spell.identity.ability_type);
+							combat.reduceSp(caster, spell, "enemy");
+						}
+					}
+				}else{
+					console.log("Enemy attempted to select a spell but did not have any.");
+					combat.selectRandomAction(targ);
+				}
+			break;
+
+			case 2:
+				var caster = enemyParty.party[combat.enemyQueue];
+				var casterSpells = enemyParty.party[combat.enemyQueue].abilities;
+				if(casterSpells.length > 0 && caster.profile.ultimate == caster.profile.maxUltimate){
+					var caster = enemyParty.party[combat.enemyQueue];
+					var spell = combat.selectUltimate(targ);
+					if(spell.identity.ability_type == "spell"){
+						if(spell.identity.target_type == "single" && spell.identity.modify_type == "damage"){
+							combat.spellDamage(caster, targ, "actor", spell, spell.identity.ability_type);
+							combat.reduceUltimate(caster, "enemy");
+						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "damage"){
+							combat.dealPartyDamage(player.party, spell, spell.identity.ability_type);
+							combat.reduceUltimate(caster, "enemy");
+						}else if(spell.identity.target_type == "single" && spell.identity.modify_type == "healing" || spell.identity.target_type == "single" && spell.identity.modify_type == "utility"){
+							var target = combat.selectAliveTarget(enemyParty.party);
+							combat.healDamage(caster, target, spell.stats.amount, "enemy");
+							combat.reduceUltimate(caster, "enemy");
+						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "healing" || spell.identity.target_type == "multi-target" && spell.identity.modify_type == "utility"){
+							combat.dealPartyHealing(enemyParty.party, spell, spell.identity.ability_type);
+							combat.reduceUltimate(caster, "enemy");
+						}
+					}else if(spell.identity.ability_type == "special"){
+						if(spell.identity.target_type == "single" && spell.identity.modify_type == "damage"){
+							combat.spellDamage(caster, targ, "actor", spell, spell.identity.ability_type);
+							combat.reduceUltimate(caster, "enemy");
+						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "damage"){
+							combat.dealPartyDamage(player.party, spell, spell.identity.ability_type);
+							combat.reduceUltimate(caster, targ, spell.stats.amount, "enemy");
+						}else if(spell.identity.target_type == "single" && spell.identity.modify_type == "healing" || spell.identity.target_type == "single" && spell.identity.modify_type == "utility"){
+							var target = combat.selectAliveTarget(enemyParty.party);
+							combat.healDamage(caster, target, spell.stats.amount, "enemy");
+							combat.reduceUltimate(caster, "enemy");
+						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "healing" || spell.identity.target_type == "multi-target" && spell.identity.modify_type == "utility"){
+							combat.dealPartyHealing(enemyParty.party, spell, spell.identity.ability_type);
+							combat.reduceUltimate(caster, "enemy");
+						}
+					}
+				}else{
+					console.log("Enemy tried to cast an ultimate but did not have any ultimates or the energy to cast one.");
+					combat.selectRandomAction(targ);
+				}
+
+			break;
+		}
+	}
+
+	selectRandomAbility(targ){
+		var caster = enemyParty.party[combat.enemyQueue];
+		var casterSpells = enemyParty.party[combat.enemyQueue].abilities;
+		
+
+		if(casterSpells.length > 0){
+			for(var i = 0;i<casterSpells.length;i++){
+				if(casterSpells[i].identity.ability_type == "spell"){
+					if(casterSpells[i].stats.mana_cost < caster.profile.mana){
+						return casterSpells[i]
+					}
+				}else if(casterSpells[i].identity.ability_type == "ability"){
+					if(casterSpells[i].stats.mana_cost < caster.profile.sp){
+						return casterSpells[i];
+					}
+				}
+				combat.selectRandomAction(targ);
+			}
+		}else{
+			combat.selectRandomAction(targ);
+		}
+		
+	}
+
+	selectUltimate(targ){
+		var caster = enemyParty.party[combat.enemyQueue];
+		if(caster.profile.ultimate == caster.profile.maxUltimate){
+			for(var i = 0;i<caster.abilities.length;i++){
+				if(caster.abilities[i].identity.ultimate == "yes"){
+					console.log("reached here");
+					return caster.abilities[i];
+				}
+			}
+		}
+
+		combat.selectRandomAction(targ);
+	}
+
+	checkForSpells(target){
+		var spellFound = false;
+		if(target.abilities.length > 0){
+			for(var i = 0;i<target.abilities.length;i++){
+				if(target.abilities[i].identity.ability_type == "spell" && target.abilities[i].identity.ultimate == "no" || target.abilities[i].identity.ability_type == "special" && target.abilities[i].identity.ultimate == "no"){
+					spellFound = true;
+					return spellFound;
+				}
+			}
+
+			return spellFound;
 		}
 	}
 
@@ -221,8 +391,12 @@ class Combat{
 		var caster = combat.currentTurn == 0 ? player.party[combat.playerQueue] : enemyParty.party[combat.enemyQueue];
 
 		for(var i = 0;i<party.length;i++){
-			combat.spellDamage(caster, party[i], affiliation, spell, ability_type);
-			stat.checkSuccess(party[i], spell);
+			if(combat.checkDeathStatus(party[i]) != true){
+				combat.spellDamage(caster, party[i], affiliation, spell, ability_type);
+				stat.checkSuccess(party[i], spell);
+			}else{
+				continue;
+			}
 		}
 	}
 
@@ -231,8 +405,12 @@ class Combat{
 		var caster = affiliation == "actor" ? player.party[combat.playerQueue] : enemyParty.party[combat.enemyQueue];
 
 		for(var i = 0;i<party.length;i++){
-			combat.spellDamage(caster, party[i], affiliation, spell, ability_type);
-			stat.checkSuccess(party[i], spell);
+			if(combat.checkDeathStatus(party[i]) != true){
+				combat.healDamage(caster, party[i], spell.stats.amount, affiliation);
+				stat.checkSuccess(party[i], spell);
+			}else{
+				continue;
+			}
 		}
 	}
 
@@ -452,7 +630,6 @@ class Actions{
 				combat.reduceUltimate(player.party[combat.playerQueue], "actor");
 			}
 		}
-		console.log(combat.playerQueue);
 		combat.playerQueue += 1;
 		if(combat.playerQueue <= player.party.length){
 			displayer.hideOptions();

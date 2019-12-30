@@ -220,7 +220,7 @@ class Display{
 		}else if(affiliation == "enemy"){
 			index = enemyParty.party.indexOf(target) + 1;
 		}
-		$("div#" + affiliation + "_"+index+"  div.health-bar-text").html(Math.round(a) + "%");
+		$("div#" + affiliation + "_"+index+"  div.health-bar-text").html("HP: " + Math.round(a) + "%");
 		$("div#" + affiliation + "_"+index+"  div.health-bar-red").animate({'width':a + '%'}, 700);
 		$("div#" + affiliation + "_"+index+"  div.health-bar").animate({'width': a + '%'}, 500);
 		$("div#" + affiliation + "_"+index+"  div.health-bar-blue").animate({'width': a + '%'}, 300);
@@ -238,7 +238,7 @@ class Display{
 			index = enemyParty.party.indexOf(target) + 1;
 		}
 
-		$("div#" + affiliation + "_"+index+" div.mana-bar-text").html(Math.round(a) + "%");
+		$("div#" + affiliation + "_"+index+" div.mana-bar-text").html("MP: "+Math.round(a) + "%");
 		$("div#" + affiliation + "_"+index+" div.mana-bar-red").animate({'width':a + '%'}, 700);
 		$("div#" + affiliation + "_"+index+" div.mana-bar").animate({'width':a + '%'}, 500);
 		$("div#" + affiliation + "_"+index+" div.mana-bar-blue").animate({'width':a + '%'}, 300);
@@ -256,7 +256,7 @@ class Display{
 			index = enemyParty.party.indexOf(target) + 1;
 		}
 
-		$("div#" + affiliation + "_"+index+" div.sp-bar-text").html(Math.round(a) + "%");
+		$("div#" + affiliation + "_"+index+" div.sp-bar-text").html("SP: " + Math.round(a) + "%");
 		$("div#" + affiliation + "_"+index+" div.sp-bar-red").animate({'width':a + '%'}, 700);
 		$("div#" + affiliation + "_"+index+" div.sp-bar").animate({'width':a + '%'}, 500);
 		$("div#" + affiliation + "_"+index+" div.sp-bar-blue").animate({'width':a + '%'}, 300);
@@ -274,7 +274,7 @@ class Display{
 			index = enemyParty.party.indexOf(target) + 1;
 		}
 
-		$("div#" + affiliation + "_"+index+" div.ult-bar-text").html(Math.round(a) + "%");
+		$("div#" + affiliation + "_"+index+" div.ult-bar-text").html("ULT: "+ Math.round(a) + "%");
 		$("div#" + affiliation + "_"+index+" div.ult-bar-red").animate({'width':a + '%'}, 700);
 		$("div#" + affiliation + "_"+index+" div.ult-bar").animate({'width':a + '%'}, 500);
 		$("div#" + affiliation + "_"+index+" div.ult-bar-blue").animate({'width':a + '%'}, 300);
