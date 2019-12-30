@@ -1,4 +1,8 @@
 [12/28/2019]
 
---log.print() has a bug specifically when trying to print death messages to the log. Not printing for all dead members.
---The stats applied by Buffs and Debuffs are not being properly modified at the end of their duration to revert to normal.
+--log.print() has a bug specifically when trying to print death messages to the log. Not printing for all dead members.[FIXED]
+--The stats applied by Buffs and Debuffs are not being properly modified at the end of their duration to revert to normal.[FIXED]
+
+
+[12/29/2019]
+

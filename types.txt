@@ -1,0 +1,121 @@
+Main Elements
+
+Earth
+	Golem
+	Gnome
+	Dwarf
+	Gargoyle
+	Goblin
+	Earth Dragon
+	Giant
+	Nymph
+	Ogre
+	Troll
+	Earth Elemental
+
+Earth + Water: Nature
+	Bigfoot
+	Dryad
+	Elf
+	Owlman
+	Unicorn
+	Satyr
+	Nature Elemental
+
+Earth + Fire: Magma
+	Dragons
+	Hellhounds
+	Obsidian Scorpids
+	Magma Elemental
+	Magma Golems
+Earth + Wind: Sand
+	Scorpion
+	Wyrm
+	Basilisk
+	Vulture
+	Sand Elemental
+	Sphinx
+	Cockatrice
+	Ghoul
+
+Water
+	Hydra
+	Serpent
+	Mermaid
+	Crustacean
+	Sea Horse
+	Squid
+	Octopus
+	Shark
+	Kraken
+	Leviathan
+	Ichthyocentaur
+
+Water + Wind: Ice
+	Amarok
+	Yuki-Onna
+	Yeti
+	Wendigo
+	Wraith
+	Tundra Wyrm
+	Mammoth
+	Polar Bear
+
+Water + Fire: Steam
+	Steam Mage
+	Steam Golem
+	Steam Elemental
+Wind
+	Djinn
+	Garuda
+	Griffin
+	Harpy
+	Hippogriff
+	Manticore
+	Sylph
+	Alicorn
+	Wyvern
+	Roc
+Wind + Fire: Lightining
+	Lightning Bird
+	Kitsune
+	Valkyrie
+	Raiju
+	Serpent Dragon
+Fire
+	Lampads
+	Fire Elemental
+	Salamander
+	Fire Giant
+	Fire Wyrm
+	Fire Mage
+	Phoenix
+	Cerberus
+	Devil
+
+
+Celestial
+	Angel
+	Seraphim
+	Deva/Devi
+	Pegasus
+	Titan
+
+Underworld
+	Demon
+	Succubus
+	Vampire
+	Baphomet
+	Dark Valkyries
+	Dullahan
+	Gazer
+Lunar
+	Hati
+	Beheaded Asura
+	Moon Serpent
+	Luna Monk
+Solar
+	Skoll
+	Asura
+	Solar Wyrm
+	Sol Monk

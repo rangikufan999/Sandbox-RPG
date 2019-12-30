@@ -46,7 +46,7 @@ class Combat{
 						combat.dealDamage(enemyParty.party[combat.enemyQueue], player.party[dieRoll.roll(player.party.length)], "actor");
 						combat.enemyQueue += 1;
 					}else if(combat.checkDeathStatus(enemyParty.party[combat.enemyQueue]) == true || takeTurn == false){
-						
+						log.print("This unit is incapacitated and cannot take their turn.");
 						combat.enemyQueue += 1;
 					}
 				}

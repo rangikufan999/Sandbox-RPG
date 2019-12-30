@@ -51,6 +51,6 @@ SYSTEMS TO WORK ON
 	-Using Items [DONE BUT NEEDS REFINED] 
 	-Ultimates [DONE BUT NEEDS REFINED]
 	-Field Effects [NOT STARTED]
-		-Light/Darkness System [TBA]
+		-Field Avatar System [NOT STARTED]
 	-Damage Bonus System [STRUCTURE MADE, NO APPLICABLE SCENARIOS YET]
 	-Fanfare System [NOT STARTED]

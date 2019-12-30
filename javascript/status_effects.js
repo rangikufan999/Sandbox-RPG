@@ -33,11 +33,12 @@ class StatusController{
 			
 			for(var i = (party[index].status.statusEffects.length - 1);i > -1;i--){
 				if(party[index].status.statusEffects[i].stats.duration == 0){
-					if(party[index].status.statusEffects[i].category == "Buff"){
-						if(party[index].status.statusEffects[i].subCategory == "buff"){
+					if(party[index].status.statusEffects[i].identity.category == "Buff"){
+						if(party[index].status.statusEffects[i].identity.subCategory == "buff"){
 							stat.modifyStat(party[index], party[index].status.statusEffects[i].stats.stat, "debuff", party[index].status.statusEffects[i].stats.amount);
+							console.log(party[index].stats);
 							party[index].status.statusEffects.splice(i, 1);
-						}else if(party[index].status.statusEffects[i].subCategory == "debuff"){
+						}else if(party[index].status.statusEffects[i].identity.subCategory == "debuff"){
 							stat.modifyStat(party[index], party[index].status.statusEffects[i].stats.stat, "buff", party[index].status.statusEffects[i].stats.amount);
 							party[index].status.statusEffects.splice(i, 1);
 						}
@@ -46,7 +47,6 @@ class StatusController{
 						party[index].status.statusEffects.splice(i, 1);
 					}
 				}else if(party[index].status.statusEffects[i].stats.duration > 0){
-					console.log(party[index].profile.name + " duration at " + party[index].status.statusEffects[i].stats.duration);
 					party[index].status.statusEffects[i].stats.duration -= 1;
 					takeTurn = stat.callStatusMechanic(party[index], party[index].status.statusEffects[i], affiliation);
 
@@ -205,9 +205,13 @@ class StatusController{
 		if(spell.stats.rate_of_success > 0){
 			if(spell.stats.rate_of_success >= 1){
 				if(spell.stats.status_effect.identity.category == "Buff"){
-					stat.modifyStat(target, spell.stats.status_effect.stats.stat, spell.stats.status_effect.identity.subCategory, spell.stats.status_effect.stats.amount);
-					target.status.statusEffects.push(stat.returnNewStatusEffect(spell));
-					log.print(target.profile.name + " has " + spell.stats.status_effect.details.name);
+					if(stat.checkBuffExists(target, spell.stats.status_effect) == false){
+						stat.modifyStat(target, spell.stats.status_effect.stats.stat, spell.stats.status_effect.identity.subCategory, spell.stats.status_effect.stats.amount);
+						target.status.statusEffects.push(stat.returnNewStatusEffect(spell));
+						log.print(target.profile.name + " has " + spell.stats.status_effect.details.name);
+					}else if(stat.checkBuffExists(target, spell.stats.status_effect) == true){
+						log.print(target.profile.name + " already has " + spell.stats.status_effect.details.name);
+					}
 				}else{
 					target.status.statusEffects.push(stat.returnNewStatusEffect(spell));
 					log.print(target.profile.name + " has " + spell.stats.status_effect.details.name);
@@ -218,6 +222,21 @@ class StatusController{
 					log.print(target.profile.name + " has " + spell.stats.status_effect.details.name);
 				}
 			}
+		}
+	}
+
+	checkBuffExists(target, effect){
+		if(target.status.statusEffects.length > 0){
+			for(var i = 0;i<target.status.statusEffects.length;i++){
+				console.log(effect.details.name + ": " + target.status.statusEffects[i].details.name);
+				if(effect.details.name == target.status.statusEffects[i].details.name){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		}else if(target.status.statusEffects.length <= 0){
+			return false;
 		}
 	}
 
