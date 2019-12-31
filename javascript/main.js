@@ -79,5 +79,5 @@ class EnemyParty{
 
 
 
-var defaults = new Defaults(300,300, 3000, 1,70,10,15,0,0,0,30);
+var defaults = new Defaults(3000,3000, 3000, 1,70,10,15,0,0,0,30);
 

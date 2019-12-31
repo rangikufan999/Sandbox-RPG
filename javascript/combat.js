@@ -1,12 +1,13 @@
 //** Combat Class **//
 
 class Combat{
-	constructor(currentTurn, playerQueue, gameOver,  fieldEffectTurn, enemyQueue){
+	constructor(currentTurn, playerQueue, gameOver,  fieldEffectTurn, enemyQueue, turnCount){
 		this.currentTurn = currentTurn;
 		this.playerQueue = playerQueue;
 		this.gameOver = gameOver;
 		this.fieldEffectTurn = fieldEffectTurn;
 		this.enemyQueue = enemyQueue;
+		this.turnCount = turnCount;
 	}
 
 	initiateFieldTurn(){
@@ -17,19 +18,22 @@ class Combat{
 	/* Change statusEffects == "DEAD" or != "DEAD" to function check for "DEAD" status object */
 	initiateTurn(){
 		if(this.currentTurn == 0 && this.gameOver == false){
-			log.print("Player's Turn! Select an action!");
 			var takeTurn = stat.checkStatus(this.playerQueue);
 			if(this.checkDeathStatus(player.party[this.playerQueue]) == false && takeTurn != false){
 				displayer.displayOptions();
 			}else if(this.checkDeathStatus(player.party[this.playerQueue]) == true || takeTurn == false){
 				this.playerQueue += 1;
 				if(this.playerQueue >= player.party.length){
+					console.log("got here");
+					log.print("--------- Turn: " + combat.turnCount + " [Enemy's Turn] ---------");
 					this.currentTurn = 1;
+					this.turnCount += 1;
 					this.initiateTurn();
 					$("#targets").hide();
 					$("#targetSubmit").hide();
 				}else if(this.playerQueue < player.party.length){
 					if(combat.fieldEffectTurn < 2){
+						log.print("--------- Turn: " + combat.turnCount + " [Enemy's Turn] ---------");
 						this.initiateTurn();
 					}else if(combat.fieldEffectTurn == 2){
 						this.initiateFieldTurn();
@@ -38,7 +42,6 @@ class Combat{
 				}
 			}
 		}else if(this.currentTurn == 1 && this.gameOver == false){
-			log.print("Enemy's Turn! Here they come!");
 			var comb = setInterval(function(){
 				if(combat.enemyQueue<enemyParty.party.length && combat.gameOver == false){
 					var takeTurn = stat.checkStatus(combat.enemyQueue);
@@ -57,6 +60,8 @@ class Combat{
 						combat.currentTurn = 0;
 						combat.playerQueue = 0;
 						combat.enemyQueue = 0;
+						combat.turnCount += 1;
+						log.print("--------- Turn: " + combat.turnCount + " [Player's Turn] ---------");
 						combat.initiateTurn();
 					},500)
 				}else if(combat.gameOver == true){
@@ -65,6 +70,8 @@ class Combat{
 						combat.currentTurn = 0;
 						combat.playerQueue = 0;
 						combat.enemyQueue = 0;
+						combat.turnCount += 1;
+						log.print("--------- Turn: " + combat.turnCount + " [Player's Turn] ---------");
 						combat.initiateTurn();
 					}, 500)
 				}
@@ -111,32 +118,48 @@ class Combat{
 					if(spell.identity.ability_type == "spell"){
 						if(spell.identity.target_type == "single" && spell.identity.modify_type == "damage"){
 							combat.spellDamage(caster, targ, "actor", spell, spell.identity.ability_type);
+							stat.checkSuccess(targ, spell);
 							combat.reduceMana(caster, spell, "enemy");
 						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "damage"){
 							combat.dealPartyDamage(player.party, spell, spell.identity.ability_type);
 							combat.reduceMana(caster, spell, "enemy");
 						}else if(spell.identity.target_type == "single" && spell.identity.modify_type == "healing" || spell.identity.target_type == "single" && spell.identity.modify_type == "utility"){
 							var target = combat.selectAliveTarget(enemyParty.party);
+							log.print("["+ spell.details.name + "]!");
 							combat.healDamage(caster, target, spell.stats.amount, "enemy");
+							stat.checkSuccess(targ, spell);
 							combat.reduceMana(caster, spell, "enemy");
 						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "healing" || spell.identity.target_type == "multi-target" && spell.identity.modify_type == "utility"){
 							combat.dealPartyHealing(enemyParty.party, spell, spell.identity.ability_type);
 							combat.reduceMana(caster, spell, "enemy");
+						}else if(spell.identity.target_type == "self"){
+							combat.healDamage(enemyParty.party[combat.enemyQueue], enemyParty.party[combat.enemyQueue], spell.stats.amount, "enemy");
+							log.print("["+ spell.details.name + "]!");
+							stat.checkSuccess(enemyParty.party[combat.enemyQueue], spell);
+							combat.reduceMana(enemyParty.party[combat.enemyQueue], spell, "enemy");
 						}
 					}else if(spell.identity.ability_type == "special"){
 						if(spell.identity.target_type == "single" && spell.identity.modify_type == "damage"){
 							combat.spellDamage(caster, targ, "actor", spell, spell.identity.ability_type);
+							stat.checkSuccess(targ, spell);
 							combat.reduceSp(caster, spell, "enemy");
 						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "damage"){
 							combat.dealPartyDamage(player.party, spell, spell.identity.ability_type);
-							combat.reduceSp(caster, targ, spell.stats.amount, "enemy");
+							combat.reduceSp(caster, spell, "enemy");
 						}else if(spell.identity.target_type == "single" && spell.identity.modify_type == "healing" || spell.identity.target_type == "single" && spell.identity.modify_type == "utility"){
 							var target = combat.selectAliveTarget(enemyParty.party);
+							log.print("["+ spell.details.name + "]!");
 							combat.healDamage(caster, target, spell.stats.amount, "enemy");
+							stat.checkSuccess(targ, spell);
 							combat.reduceSp(caster, spell, "enemy");
 						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "healing" || spell.identity.target_type == "multi-target" && spell.identity.modify_type == "utility"){
 							combat.dealPartyHealing(enemyParty.party, spell, spell.identity.ability_type);
 							combat.reduceSp(caster, spell, "enemy");
+						}else if(spell.identity.target_type == "self"){
+							combat.healDamage(enemyParty.party[combat.enemyQueue], enemyParty.party[combat.enemyQueue], spell.stats.amount, "enemy");
+							log.print("["+ spell.details.name + "]!");
+							stat.checkSuccess(enemyParty.party[combat.enemyQueue], spell);
+							combat.reduceSp(enemyParty.party[combat.enemyQueue], spell, "enemy");
 						}
 					}
 				}else{
@@ -154,32 +177,46 @@ class Combat{
 					if(spell.identity.ability_type == "spell"){
 						if(spell.identity.target_type == "single" && spell.identity.modify_type == "damage"){
 							combat.spellDamage(caster, targ, "actor", spell, spell.identity.ability_type);
+							stat.checkSuccess(targ, spell);
 							combat.reduceUltimate(caster, "enemy");
 						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "damage"){
 							combat.dealPartyDamage(player.party, spell, spell.identity.ability_type);
 							combat.reduceUltimate(caster, "enemy");
 						}else if(spell.identity.target_type == "single" && spell.identity.modify_type == "healing" || spell.identity.target_type == "single" && spell.identity.modify_type == "utility"){
 							var target = combat.selectAliveTarget(enemyParty.party);
+							log.print("["+ spell.details.name + "]!");
 							combat.healDamage(caster, target, spell.stats.amount, "enemy");
+							stat.checkSuccess(targ, spell);
 							combat.reduceUltimate(caster, "enemy");
 						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "healing" || spell.identity.target_type == "multi-target" && spell.identity.modify_type == "utility"){
 							combat.dealPartyHealing(enemyParty.party, spell, spell.identity.ability_type);
 							combat.reduceUltimate(caster, "enemy");
+						}else if(spell.identity.target_type == "self"){
+							combat.healDamage(enemyParty.party[combat.enemyQueue], enemyParty.party[combat.enemyQueue], spell.stats.amount, "enemy");
+							stat.checkSuccess(enemyParty.party[combat.enemyQueue], spell);
+							combat.reduceUltimate(enemyParty.party[combat.enemyQueue], "enemy");
 						}
 					}else if(spell.identity.ability_type == "special"){
 						if(spell.identity.target_type == "single" && spell.identity.modify_type == "damage"){
 							combat.spellDamage(caster, targ, "actor", spell, spell.identity.ability_type);
+							stat.checkSuccess(targ, spell);
 							combat.reduceUltimate(caster, "enemy");
 						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "damage"){
 							combat.dealPartyDamage(player.party, spell, spell.identity.ability_type);
 							combat.reduceUltimate(caster, targ, spell.stats.amount, "enemy");
 						}else if(spell.identity.target_type == "single" && spell.identity.modify_type == "healing" || spell.identity.target_type == "single" && spell.identity.modify_type == "utility"){
 							var target = combat.selectAliveTarget(enemyParty.party);
+							log.print("["+ spell.details.name + "]!");
 							combat.healDamage(caster, target, spell.stats.amount, "enemy");
+							stat.checkSuccess(targ, spell);
 							combat.reduceUltimate(caster, "enemy");
 						}else if(spell.identity.target_type == "multi-target" && spell.identity.modify_type == "healing" || spell.identity.target_type == "multi-target" && spell.identity.modify_type == "utility"){
 							combat.dealPartyHealing(enemyParty.party, spell, spell.identity.ability_type);
 							combat.reduceUltimate(caster, "enemy");
+						}else if(spell.identity.target_type == "self"){
+							combat.healDamage(enemyParty.party[combat.enemyQueue], enemyParty.party[combat.enemyQueue], spell.stats.amount, "enemy");
+							stat.checkSuccess(enemyParty.party[combat.enemyQueue], spell);
+							combat.reduceUltimate(enemyParty.party[combat.enemyQueue], "enemy");
 						}
 					}
 				}else{
@@ -202,7 +239,7 @@ class Combat{
 					if(casterSpells[i].stats.mana_cost < caster.profile.mana){
 						return casterSpells[i]
 					}
-				}else if(casterSpells[i].identity.ability_type == "ability"){
+				}else if(casterSpells[i].identity.ability_type == "special"){
 					if(casterSpells[i].stats.mana_cost < caster.profile.sp){
 						return casterSpells[i];
 					}
@@ -293,7 +330,7 @@ class Combat{
 		defender.profile.health -= damage;
 		attacker.profile.ultimate += 10;
 		combat.maxOutResource(attacker, "ultimate");
-		log.print(attacker.profile.name + " dealt " + damage + " to " + defender.profile.name + "!");
+		log.print("Attack! " + attacker.profile.name + " dealt " + damage + " to " + defender.profile.name + "!");
 		combat.defaultOutResource(defender, "health");
 
 		displayer.updateUltimateBar(attacker, attackerAffiliation);
@@ -321,7 +358,7 @@ class Combat{
 
 		defender.profile.health -= damage;
 		
-		log.print(caster.profile.name + " dealt " + damage + " to " + defender.profile.name + "!");
+		log.print("["+ spell.details.name + "]!" + caster.profile.name + " dealt " + damage + " to " + defender.profile.name + "!");
 		combat.defaultOutResource(defender, "health");
 		displayer.updateHealth(defender, affiliation);
 		combat.checkGameOver(player,enemyParty);
@@ -355,7 +392,7 @@ class Combat{
 	itemHealing(item, target, affiliation){
 		combat.selectStat(target, item.stats.stat, item.stats.amount, "healing");
 		inv.reduceItemQuantity(item);
-		log.print(target.profile.name + " restored " + item.stats.amount + " health by using (a)" + item.details.name + "!");
+		log.print(item.details.name + "!" + target.profile.name + " restored " + item.stats.amount + " health by using (a)" + item.details.name + "!");
 		displayer.updateHealth(target, affiliation);
 	}
 
@@ -392,6 +429,7 @@ class Combat{
 
 		for(var i = 0;i<party.length;i++){
 			if(combat.checkDeathStatus(party[i]) != true){
+				log.print("["+ spell.details.name + "]!");
 				combat.spellDamage(caster, party[i], affiliation, spell, ability_type);
 				stat.checkSuccess(party[i], spell);
 			}else{
@@ -406,6 +444,7 @@ class Combat{
 
 		for(var i = 0;i<party.length;i++){
 			if(combat.checkDeathStatus(party[i]) != true){
+				log.print("["+ spell.details.name + "]!");
 				combat.healDamage(caster, party[i], spell.stats.amount, affiliation);
 				stat.checkSuccess(party[i], spell);
 			}else{
@@ -523,12 +562,14 @@ class Actions{
 					}
 				}else if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
 					if(spell.identity.target_type == "single"){
+						log.print("["+ spell.details.name + "]!");
 						combat.healDamage(player.party[combat.playerQueue], target, spell.stats.amount, "actor");
 						stat.checkSuccess(target, spell);	
 					}else if(spell.identity.target_type == "multi-target"){
 						combat.dealPartyHealing(target, spell, spell.identity.ability_type);
 					}else if(spell.identity.target_type == "self"){
 						var affiliation = combat.currentTurn == 0 ? "actor" : "enemy";
+						log.print(spell.details.name + "!");
 						combat.healDamage(target, target, spell.stats.amount, affiliation);
 						stat.checkSuccess(target, spell);
 					}
@@ -554,12 +595,14 @@ class Actions{
 					}
 				}else if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
 					if(spell.identity.target_type == "single"){
+						log.print("["+ spell.details.name + "]!");
 						combat.healDamage(player.party[combat.playerQueue], target, spell.stats.amount, "actor");
 						stat.checkSuccess(target, spell);	
 					}else if(spell.identity.target_type == "multi-target"){
 						combat.dealPartyHealing(target, spell, spell.identity.ability_type);
 					}else if(spell.identity.target_type == "self"){
 						var affiliation = combat.currentTurn == 0 ? "actor" : "enemy";
+						log.print("["+ spell.details.name + "]!");
 						combat.healDamage(target, target, spell.stats.amount, affiliation);
 						stat.checkSuccess(target, spell);
 					}
@@ -591,12 +634,14 @@ class Actions{
 					}
 				}else if(spell.identity.modify_type == "healing" || spell.identity.modify_type == "utility"){
 					if(spell.identity.target_type == "single"){
+						log.print("["+ spell.details.name + "]!");
 						combat.healDamage(player.party[combat.playerQueue], target, spell.stats.amount, "actor");
 						stat.checkSuccess(target, spell);	
 					}else if(spell.identity.target_type == "multi-target"){
 						combat.dealPartyHealing(target, spell, spell.identity.ability_type);
 					}else if(spell.identity.target_type == "self"){
 						var affiliation = combat.currentTurn == 0 ? "actor" : "enemy";
+						log.print(spell.details.name + "!");
 						combat.healDamage(target, target, spell.stats.amount, affiliation);
 						stat.checkSuccess(target, spell);
 					}
@@ -617,12 +662,14 @@ class Actions{
 					}
 				}else if(spell.identity.modify_type == "healing"){
 					if(spell.identity.target_type == "single"){
+						log.print("["+ spell.details.name + "]!");
 						combat.healDamage(player.party[combat.playerQueue], target, spell.stats.amount, "actor");
 						stat.checkSuccess(target, spell);	
 					}else if(spell.identity.target_type == "multi-target"){
 						combat.dealPartyHealing(target, spell, spell.identity.ability_type);
 					}else if(spell.identity.target_type == "self"){
 						var affiliation = combat.currentTurn == 0 ? "actor" : "enemy";
+						log.print("["+ spell.details.name + "]!");
 						combat.healDamage(target, target, spell.stats.amount, affiliation);
 						stat.checkSuccess(target, spell);
 					}
@@ -634,7 +681,10 @@ class Actions{
 		if(combat.playerQueue <= player.party.length){
 			displayer.hideOptions();
 			if(combat.playerQueue == player.party.length){
+				
 				combat.currentTurn = 1;
+				combat.turnCount += 1;
+				log.print("--------- Turn: " + combat.turnCount + " [Enemy's Turn] ---------");
 			}
 			combat.initiateTurn();
 			$("#targets").hide();
