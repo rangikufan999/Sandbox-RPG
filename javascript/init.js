@@ -56,17 +56,17 @@ player.party[3].abilities.push(poisonous_cupcake);
 player.party[3].abilities.push(restorative_foodpill);
 player.party[4].abilities.push(cha_nara);
 
-enemyParty.party[0].abilities.push(sage_mode);
-enemyParty.party[1].abilities.push(sage_mode);
-enemyParty.party[2].abilities.push(sage_mode);
-enemyParty.party[3].abilities.push(sage_mode);
-enemyParty.party[4].abilities.push(sage_mode);
-enemyParty.party[4].abilities.push(sage_mode);
-enemyParty.party[4].abilities.push(sage_mode);
+// enemyParty.party[0].abilities.push(daze_palm);
+// enemyParty.party[1].abilities.push(daze_palm);
+// enemyParty.party[2].abilities.push(daze_palm);
+// enemyParty.party[3].abilities.push(daze_palm);
+// enemyParty.party[4].abilities.push(daze_palm);
+// enemyParty.party[4].abilities.push(daze_palm);
+// enemyParty.party[4].abilities.push(daze_palm);
 
 
 
-//Add Items to inventory here!
+//Add Items to inventory here!                                                                                                                                                               
 var potion = new Item("Potion", "A potion restores some health.", 5, 30, "ally", "healing", "NA", "health", 50);
 var grenade = new Item("Grenade", "Does fire damage to a single enemy.", 5, 30, "enemy", "damage", "NA", "NA", 50);
 var full_restore = new Item("Full Restore", "Removes all status effects.", 1, 200, "ally", "utility_ally", "NA", "clear", 0);

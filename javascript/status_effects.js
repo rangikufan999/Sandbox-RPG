@@ -205,13 +205,7 @@ class StatusController{
 		if(spell.stats.rate_of_success > 0){
 			if(spell.stats.rate_of_success >= 1){
 				if(spell.stats.status_effect.identity.category == "Buff"){
-					if(stat.checkBuffExists(target, spell.stats.status_effect) == false){
-						stat.modifyStat(target, spell.stats.status_effect.stats.stat, spell.stats.status_effect.identity.subCategory, spell.stats.status_effect.stats.amount);
-						target.status.statusEffects.push(stat.returnNewStatusEffect(spell));
-						log.print(target.profile.name + " has " + spell.stats.status_effect.details.name);
-					}else if(stat.checkBuffExists(target, spell.stats.status_effect) == true){
-						log.print(target.profile.name + " already has " + spell.stats.status_effect.details.name);
-					}
+					stat.determineAddBuff(target,spell);
 				}else{
 					target.status.statusEffects.push(stat.returnNewStatusEffect(spell));
 					log.print(target.profile.name + " has " + spell.stats.status_effect.details.name);
@@ -222,6 +216,16 @@ class StatusController{
 					log.print(target.profile.name + " has " + spell.stats.status_effect.details.name);
 				}
 			}
+		}
+	}
+
+	determineAddBuff(target, spell){
+		if(stat.checkBuffExists(target, spell.stats.status_effect) == false){
+			stat.modifyStat(target, spell.stats.status_effect.stats.stat, spell.stats.status_effect.identity.subCategory, spell.stats.status_effect.stats.amount);
+			target.status.statusEffects.push(stat.returnNewStatusEffect(spell));
+			log.print(target.profile.name + " has " + spell.stats.status_effect.details.name);
+		}else if(stat.checkBuffExists(target, spell.stats.status_effect) == true){
+			log.print(target.profile.name + " already has " + spell.stats.status_effect.details.name);
 		}
 	}
 

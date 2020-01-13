@@ -28,17 +28,19 @@ class Combat{
 					log.print("--------- Turn: " + combat.turnCount + " [Enemy's Turn] ---------");
 					this.currentTurn = 1;
 					this.turnCount += 1;
-					this.initiateTurn();
+					this.fieldEffectTurn += 1;
 					$("#targets").hide();
 					$("#targetSubmit").hide();
-				}else if(this.playerQueue < player.party.length){
 					if(combat.fieldEffectTurn < 2){
-						log.print("--------- Turn: " + combat.turnCount + " [Enemy's Turn] ---------");
 						this.initiateTurn();
 					}else if(combat.fieldEffectTurn == 2){
-						this.initiateFieldTurn();
+						console.log("Field Turn Initiated after Player Turn");
+						combat.initiateFieldTurn();
 					}
 					
+				}else if(this.playerQueue < player.party.length){
+					log.print("--------- Turn: " + combat.turnCount + " [Enemy's Turn] ---------");
+					this.initiateTurn();
 				}
 			}
 		}else if(this.currentTurn == 1 && this.gameOver == false){
@@ -61,8 +63,15 @@ class Combat{
 						combat.playerQueue = 0;
 						combat.enemyQueue = 0;
 						combat.turnCount += 1;
+						combat.fieldEffectTurn += 1;
+						console.log(combat.fieldEffectTurn);
 						log.print("--------- Turn: " + combat.turnCount + " [Player's Turn] ---------");
+						if(combat.fieldEffectTurn < 2){
 						combat.initiateTurn();
+						}else if(combat.fieldEffectTurn == 2){
+							console.log("Field Turn Initiated after Enemy Turn");
+							combat.initiateFieldTurn();
+						}
 					},500)
 				}else if(combat.gameOver == true){
 					clearInterval(comb);
@@ -174,7 +183,7 @@ class Combat{
 				if(casterSpells.length > 0 && caster.profile.ultimate == caster.profile.maxUltimate){
 					var caster = enemyParty.party[combat.enemyQueue];
 					var spell = combat.selectUltimate(targ);
-					if(spell.identity.ability_type == "spell"){
+					if(spell.identity.ability_type == "spell" && spell != undefined){
 						if(spell.identity.target_type == "single" && spell.identity.modify_type == "damage"){
 							combat.spellDamage(caster, targ, "actor", spell, spell.identity.ability_type);
 							stat.checkSuccess(targ, spell);
@@ -218,6 +227,8 @@ class Combat{
 							stat.checkSuccess(enemyParty.party[combat.enemyQueue], spell);
 							combat.reduceUltimate(enemyParty.party[combat.enemyQueue], "enemy");
 						}
+					}else{
+						combat.selectRandomAction(targ);
 					}
 				}else{
 					console.log("Enemy tried to cast an ultimate but did not have any ultimates or the energy to cast one.");
@@ -684,7 +695,14 @@ class Actions{
 				
 				combat.currentTurn = 1;
 				combat.turnCount += 1;
+				combat.fieldEffectTurn += 1;
 				log.print("--------- Turn: " + combat.turnCount + " [Enemy's Turn] ---------");
+				console.log(combat.fieldEffectTurn);
+				if(combat.fieldEffectTurn == 2){
+					combat.iniitiateFieldTurn();
+					$("#targets").hide();
+					$("#targetSubmit").hide();
+				}
 			}
 			combat.initiateTurn();
 			$("#targets").hide();

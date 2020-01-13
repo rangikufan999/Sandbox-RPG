@@ -27,7 +27,7 @@ class Player{
 
 //** Hero and Enemy Class **//
 class Actor{
-	constructor(name, img, health = defaults.health, maxHealth = defaults.health, mana = defaults.mana, maxMana = defaults.mana, sp = defaults.sp, maxSp = defaults.sp, ultimate = 0, maxUltimate = 10, level = defaults.level, type = "Earth", subType = "Gnome", archeType = "Warrior", attack = defaults.attack, defense = defaults.defense, magic = defaults.magic, resistance = defaults.resistance, crit = defaults.crit, statusEffects = [], abilities = []){
+	constructor(name, img, health = defaults.health, maxHealth = defaults.health, mana = defaults.mana, maxMana = defaults.mana, sp = defaults.sp, maxSp = defaults.sp, ultimate = 0, maxUltimate = 10, level = defaults.level, element = "Earth", race = "Gnome", archetype = "Warrior", attack = defaults.attack, defense = defaults.defense, magic = defaults.magic, resistance = defaults.resistance, crit = defaults.crit, statusEffects = [], abilities = []){
 
 		this.profile = {
 			name: name,
@@ -41,9 +41,9 @@ class Actor{
 			ultimate: ultimate,
 			maxUltimate: maxUltimate,
 			level: level,
-			type: type,
-			subType: subType,
-			archeType: archeType
+			element: element,
+			race: race,
+			archetype: archetype
 		};
 
 		this.stats = {
@@ -63,8 +63,8 @@ class Actor{
 }
 
 class Hero extends Actor{
-	constructor(name, img, exp = defaults.exp, expNeeded = defaults.expNeeded, health, maxHealth, mana, maxMana, sp, maxSp, ultimate, maxUltimate, level, type, subType, archeType, attack, defense, magic, resistance, crit, statusEffects){
-		super(name, img, health, maxHealth, mana, maxMana, sp, maxSp, ultimate, maxUltimate, level, type, subType, archeType, attack, defense, magic, resistance, crit, statusEffects);
+	constructor(name, img, exp = defaults.exp, expNeeded = defaults.expNeeded, health, maxHealth, mana, maxMana, sp, maxSp, ultimate, maxUltimate, level, element, race, archetype, attack, defense, magic, resistance, crit, statusEffects){
+		super(name, img, health, maxHealth, mana, maxMana, sp, maxSp, ultimate, maxUltimate, level, element, race, archetype, attack, defense, magic, resistance, crit, statusEffects);
 		this.profile.exp = exp;
 		this.profile.expNeeded = expNeeded;
 		
