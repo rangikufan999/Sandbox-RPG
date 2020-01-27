@@ -339,5 +339,10 @@
 
 		<script src="https://unpkg.com/popper.js@1"></script>
 		<script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.iife.js"></script>
+		<script>
+			window.onbeforeunload = function(event){
+				localStorage.setItem("leaving", true);
+			}
+		</script>
 	</body>
 </html>
