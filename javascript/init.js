@@ -10,6 +10,7 @@ var damageReduction = new DamageReduction();
 var inv = new Inventory();
 var crit = new Crit();
 var db = new DamageBonus();
+var saveSystem = new FileManager();
 
 
 
@@ -76,7 +77,18 @@ inv.addItem(grenade, player.inventory);
 inv.addItem(full_restore, player.inventory);
 
 var stat = new StatusController();
+
 $(document).ready(function(){
+
+	var file = saveSystem.loadFile("player");
+	if(file == null || file == undefined || file == ""){
+		alert("File not found.");
+		saveSystem.saveFile("player", player);
+	}else{
+		player = saveSystem.loadFile("player");
+		alert(file.accountName);
+	}
+
 	displayer.displayParty(player.party, "actor");
 	displayer.displayParty(enemyParty.party,"enemy");
 	displayer.massUpdateScreen();
@@ -91,6 +103,8 @@ $(document).ready(function(){
 		actions.ability();
 	});
 });
+
+
 
 
 

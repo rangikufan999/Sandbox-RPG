@@ -1,12 +1,12 @@
 
-class fileManager{
+class FileManager{
 	constructor(){}
 
 	saveFile(name, file){
 		localStorage.setItem(name, JSON.stringify(file));
 	}
 
-	getFile(name){
-		return localStorage.getItem(name);
+	loadFile(name){
+		return JSON.parse(localStorage.getItem(name));
 	}
 }

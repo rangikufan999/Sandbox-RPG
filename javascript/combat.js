@@ -33,9 +33,10 @@ class Combat{
 					$("#targetSubmit").hide();
 					if(combat.fieldEffectTurn < 2){
 						this.initiateTurn();
-					}else if(combat.fieldEffectTurn == 2){
+					}else if(combat.fieldEffectTurn >= 2){
 						console.log("Field Turn Initiated after Player Turn");
-						combat.initiateFieldTurn();
+						// combat.initiateFieldTurn();
+						this.initiateTurn();
 					}
 					
 				}else if(this.playerQueue < player.party.length){
@@ -68,9 +69,10 @@ class Combat{
 						log.print("--------- Turn: " + combat.turnCount + " [Player's Turn] ---------");
 						if(combat.fieldEffectTurn < 2){
 						combat.initiateTurn();
-						}else if(combat.fieldEffectTurn == 2){
+						}else if(combat.fieldEffectTurn >= 2){
 							console.log("Field Turn Initiated after Enemy Turn");
-							combat.initiateFieldTurn();
+							// combat.initiateFieldTurn();
+							combat.initiateTurn();
 						}
 					},500)
 				}else if(combat.gameOver == true){
