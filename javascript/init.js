@@ -11,6 +11,7 @@ var inv = new Inventory();
 var crit = new Crit();
 var db = new DamageBonus();
 var saveSystem = new FileManager();
+var field = new Field("Swamp", "Shrek's Swamp; dirty, wet, and smelly.", ["Earth", "Water"], ["Fire", "Wind"], "buffOrDebuff", 400, new Ability("Swamp Gas", "Swampy gases attack all those whom are weak to it but empowers those whom are strong to it.", 1, "damage", "single", "special", "no", 0, 0, 0, new StatusEffect("Gased", "This unit has been gassed", "Buff", "buff", 2, 20, "attack"), 1.00), new Ability("Swamp Gas", "Swampy gases attack all those whom are weak to it but empowers those whom are strong to it.", 1, "damage", "single", "special", "no", 0, 0, 0, new StatusEffect("Gased", "This unit has been gassed", "Buff", "debuff", 2, 20, "defense"), 1.00));
 
 
 
