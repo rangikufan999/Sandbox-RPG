@@ -11,3 +11,4 @@ class DieRoll{
 		return Math.ceil(Math.random() * maxVal);
 	}
 }
+
