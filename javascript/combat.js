@@ -334,9 +334,42 @@ class Combat{
 	}
 
 
+	//Checks the element of the defender against the element of the attacker
+	//Returns whether "strong" or "weak" and applies damage bonus based on that.
+	checkElements(attacker, defender, damage){
+		for(key in elemental.chart){
+			if(attacker.profile.element == key.element){
+				if(defender.profile.element == key.superEffective){
+					return db.superStrongTo(damage);
+				}else if(defender.profile.element == key.weakness){
+					return db.weakTo(damage);
+				}
+			}
+		}
+
+		return damage;
+	}
+
+	checkElementsSpell(spell, defender, damage){
+		for(key in elemental.chart){
+			if(spell.details.element == key.element){
+				if(defender.profile.element == key.superEffective){
+					return db.superStrongTo(damage);
+				}else if(defender.profile.element == key.weakness){
+					return db.weakTo(damage);
+				}
+			}
+		}
+
+		return damage;
+	}
+
+
 	dealDamage(attacker, defender, affiliation){
 		var damage = Math.floor(attacker.stats.attack - (damageReduction.calculatePhysicalDamageReduction(defender.stats.defense)));
 		var attackerAffiliation = combat.currentTurn == 0 ? "actor" : "enemy";
+		damage = checkElements(attacker, defender, damage);
+
 		damage = crit.calculateCrit(attacker.stats.crit, damage);
 		defender.profile.health -= damage;
 		attacker.profile.ultimate += 10;
@@ -366,6 +399,8 @@ class Combat{
 		}else if(spell.identity.ability_type == "special"){
 			damage = Math.floor((caster.stats.attack + spell.stats.amount) - (damageReduction.calculatePhysicalDamageReduction(defender.stats.defense)));	
 		}
+
+		damage = checkElementsSpell(spell, defender, damage);
 
 		defender.profile.health -= damage;
 		

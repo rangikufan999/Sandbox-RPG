@@ -1,11 +1,12 @@
 //** Abilities Class **//
 
 class Ability{
-	constructor(name, tooltip, rank, modify_type, target_type, ability_type, ultimate, mana_cost, amount, crit_rate, status_effect, rate_of_success){
+	constructor(name, tooltip, rank, element, modify_type, target_type, ability_type, ultimate, mana_cost, amount, crit_rate, status_effect, rate_of_success){
 		this.details = {
 			name: name,
 			tooltip: tooltip,
-			rank: rank
+			rank: rank,
+			element: element
 		};
 
 		this.identity = {
